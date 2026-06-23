@@ -137,7 +137,7 @@
       });
     }
   })();
-
+  document.firstElementChild.dataset.location = window.location;
   const colorDoc = ()=>{
               let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
           for (const elem of elems) {
