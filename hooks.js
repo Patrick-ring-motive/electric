@@ -146,10 +146,10 @@
             }
           }
   };
-        if(document.readyState === 'complete'){
+        if(['complete','interactive'].includes(document.readyState)){
           colorDoc();
         }else{
-          window.addEventListener('load',colorDoc);
+          document.addEventListener('DOMContentLoaded',colorDoc);
         }
 
   
