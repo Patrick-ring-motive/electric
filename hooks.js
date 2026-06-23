@@ -52,7 +52,11 @@
               return _NodeMethod.apply(this, args);
             } catch (e) {
               console.warn(e, this, ...args);
-              return _NodeMethod.apply(this, args);
+              try{
+                return _NodeMethod.apply(this, args);
+              }catch{
+                return this;
+              }
             }
           }, _NodeMethod);
         })();
