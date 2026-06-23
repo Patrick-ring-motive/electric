@@ -64,7 +64,7 @@
     `.color-${key} ${
       rm(stringify({
         color: `${compoundRe[key]?.[1]} !important`,
-        "text-shadow": `-${sz} -${sz} 0 ${ts}, ${sz} -${sz} 0 ${ts}, -${sz} ${sz} 0 ${ts}, ${sz} ${sz} 0 ${ts} !important`,
+        "xxtext-shadow": `-${sz} -${sz} 0 ${ts}, ${sz} -${sz} 0 ${ts}, -${sz} ${sz} 0 ${ts}, ${sz} ${sz} 0 ${ts} !important`,
       },null,2),'"').replace(/!important,?/g,'!important;')
     }`), ' ');
   document.firstElementChild.appendChild(style);
