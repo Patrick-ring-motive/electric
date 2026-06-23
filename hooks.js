@@ -99,14 +99,12 @@
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
         const doc = _parseFromString.apply(this, args);
-        if (args[1] === "text/html") {
           let elems = doc.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
           for (const elem of elems) {
             if (!elem?.children?.length) {
               elem.textContent = (elem.textContent || "");
             }
           }
-        }
         return doc;
       } catch (e) {
         console.warn(e, this, ...args);
@@ -139,4 +137,12 @@
       });
     }
   })();
+
+          let elems = document.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+          for (const elem of elems) {
+            if (!elem?.children?.length) {
+              elem.textContent = (elem.textContent || "");
+            }
+          }
+  
 })();
