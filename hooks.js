@@ -138,11 +138,19 @@
     }
   })();
 
-          let elems = document.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+  const colorDoc = ()=>{
+              let elems = document.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
           for (const elem of elems) {
             if (!elem?.children?.length) {
               elem.textContent = (elem.textContent || "");
             }
           }
+  };
+        if(document.readyState === 'complete'){
+          colorDoc();
+        }else{
+          window.addEventListener('load',colorDoc);
+        }
+
   
 })();
