@@ -116,7 +116,15 @@
       }
     };
   })();
-
+ (() => {
+ const _insertAdjacentHTML = Element.prototype.insertAdjacentHTML;
+ Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
+ const parser = new DOMParser();
+ const doc = parser.parseFromString(String(text), "text/html");
+ text = String(doc.body.innerHTML);
+ return _insertAdjacentHTML.call(this, position, text);
+ }
+ })();
   (() => {
     const parser = new DOMParser();
     const parse = x => parser.parseFromString(x, "text/html");
