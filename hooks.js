@@ -158,9 +158,8 @@
       }
     }
   };
-  if (['complete', 'interactive'].includes(document.readyState)) {
-    colorDoc();
-  } else {
+  colorDoc();
+   if (!['complete', 'interactive'].includes(document.readyState)) {
     document.addEventListener('DOMContentLoaded', colorDoc);
   }
 
