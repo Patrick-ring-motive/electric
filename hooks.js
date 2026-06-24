@@ -1,4 +1,6 @@
 (() => {
+  if(globalThis['&electric']){return;}
+  globalThis['&electric'] = true;
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
