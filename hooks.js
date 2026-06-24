@@ -152,8 +152,9 @@
     }
   })();
   document.firstElementChild.dataset.location = window.location;
+  const body = ()=>document.body??document.getElementsByTagName('body')[0]??document.firstElementChild;
   const colorDoc = () => {
-      let node, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      let node, walk = document.createTreeWalker(body(), NodeFilter.SHOW_TEXT, null);
       while (node = walk.nextNode()) {
         if (node.parentElement.tagName == 'SCRIPT') {
           continue;
