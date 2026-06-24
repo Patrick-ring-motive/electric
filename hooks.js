@@ -4,7 +4,7 @@
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
-  const body = (doc=document)=>doc.body??doc.getElementsByTagName('body')[0]??doc.firstElementChild;
+  const body = (doc=document)=>doc.body??doc?.getElementsByTagName?.('body')[0]??doc.firstElementChild;
     const colorDoc = (doc=document) => {
       let node, walk = doc.createTreeWalker(body(doc), NodeFilter.SHOW_TEXT, null);
       while (node = walk.nextNode()) {
