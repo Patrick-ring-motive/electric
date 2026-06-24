@@ -154,7 +154,7 @@
   })();
   document.firstElementChild.dataset.location = window.location;
   const colorDoc = () => {
-      let node, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      let node, walk = document.createTreeWalker(document.body??document.firstElementChild, NodeFilter.SHOW_TEXT, null);
       while (node = walk.nextNode()) {
         if (node.parentElement.tagName == 'SCRIPT') {
           continue;
