@@ -151,13 +151,17 @@
   })();
   document.firstElementChild.dataset.location = window.location;
   const colorDoc = () => {
-    let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
-    for (const elem of elems) {
-      if (!elem?.children?.length) {
-        elem.textContent = (elem.textContent || "");
+      let node, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      while (node = walk.nextNode()) {
+        if (node.parentElement.tagName == 'SCRIPT') {
+          continue;
+        }
+        if (node.parentElement.tagName == 'STYLE') {
+          continue;
+        }
+        node.textContent = node.textContent;
       }
-    }
-  };
+      };
   colorDoc();
    if (!['complete', 'interactive'].includes(document.readyState)) {
     document.addEventListener('DOMContentLoaded', colorDoc);
