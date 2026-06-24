@@ -1,7 +1,4 @@
 (() => {
-  if(globalThis['&electric']){return;}
-  globalThis['&electric'] = true;
-
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
@@ -154,19 +151,16 @@
   })();
   document.firstElementChild.dataset.location = window.location;
   const colorDoc = () => {
-      let node, walk = document.createTreeWalker(document.body??document.firstElementChild, NodeFilter.SHOW_TEXT, null);
-      while (node = walk.nextNode()) {
-        if (node.parentElement.tagName == 'SCRIPT') {
-          continue;
-        }
-        if (node.parentElement.tagName == 'STYLE') {
-          continue;
-        }
-        node.textContent = node.textContent;
+    let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+    for (const elem of elems) {
+      if (!elem?.children?.length) {
+        elem.textContent = (elem.textContent || "");
       }
-      };
-  colorDoc();
-   if (!['complete', 'interactive'].includes(document.readyState)) {
+    }
+  };
+  if (['complete', 'interactive'].includes(document.readyState)) {
+    colorDoc();
+  } else {
     document.addEventListener('DOMContentLoaded', colorDoc);
   }
 
