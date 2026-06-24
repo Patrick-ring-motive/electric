@@ -52,9 +52,9 @@
               return _NodeMethod.apply(this, args);
             } catch (e) {
               console.warn(e, this, ...args);
-              try{
+              try {
                 return _NodeMethod.apply(this, args);
-              }catch{
+              } catch {
                 return this;
               }
             }
@@ -103,12 +103,12 @@
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
         const doc = _parseFromString.apply(this, args);
-          let elems = doc.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
-          for (const elem of elems) {
-            if (!elem?.children?.length) {
-              elem.textContent = (elem.textContent || "");
-            }
+        let elems = doc.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+        for (const elem of elems) {
+          if (!elem?.children?.length) {
+            elem.textContent = (elem.textContent || "");
           }
+        }
         return doc;
       } catch (e) {
         console.warn(e, this, ...args);
@@ -116,15 +116,15 @@
       }
     };
   })();
- (() => {
- const _insertAdjacentHTML = Element.prototype.insertAdjacentHTML;
- Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
- const parser = new DOMParser();
- const doc = parser.parseFromString(String(text), "text/html");
- text = String(doc.body.innerHTML);
- return _insertAdjacentHTML.call(this, position, text);
- }
- })();
+  (() => {
+    const _insertAdjacentHTML = Element.prototype.insertAdjacentHTML;
+    Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(String(text), "text/html");
+      text = String(doc.body.innerHTML);
+      return _insertAdjacentHTML.call(this, position, text);
+    }
+  })();
   (() => {
     const parser = new DOMParser();
     const parse = x => parser.parseFromString(x, "text/html");
@@ -150,19 +150,18 @@
     }
   })();
   document.firstElementChild.dataset.location = window.location;
-  const colorDoc = ()=>{
-              let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
-          for (const elem of elems) {
-            if (!elem?.children?.length) {
-              elem.textContent = (elem.textContent || "");
-            }
-          }
+  const colorDoc = () => {
+    let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+    for (const elem of elems) {
+      if (!elem?.children?.length) {
+        elem.textContent = (elem.textContent || "");
+      }
+    }
   };
-        if(['complete','interactive'].includes(document.readyState)){
-          colorDoc();
-        }else{
-          document.addEventListener('DOMContentLoaded',colorDoc);
-        }
+  if (['complete', 'interactive'].includes(document.readyState)) {
+    colorDoc();
+  } else {
+    document.addEventListener('DOMContentLoaded', colorDoc);
+  }
 
-  
 })();
