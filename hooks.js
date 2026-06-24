@@ -23,6 +23,9 @@
           if (!_NodeMethod) {
             return;
           }
+          if(!String(node.prototype[method]).includes('[native code]')){
+            return;
+          }
           node.prototype[method] = Object.setPrototypeOf(function NodeMethod(
             ...args
           ) {
@@ -72,6 +75,9 @@
     for (const txt of ["textContent", "innerText"]) {
       const proto = protoMap[txt];
       const _textContent = Object.getOwnPropertyDescriptor(proto, txt);
+      if(!String(_textContent.set).includes('[native code]')){
+            continue;
+      }
       Object.defineProperty(proto, txt, {
         ..._textContent,
         set(value) {
@@ -100,6 +106,9 @@
 
   (() => {
     const _parseFromString = DOMParser.prototype.parseFromString;
+    if(!String(_parseFromString).includes('[native code]')){
+            return;
+    }
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
         const doc = _parseFromString.apply(this, args);
@@ -118,6 +127,9 @@
   })();
   (() => {
     const _insertAdjacentHTML = Element.prototype.insertAdjacentHTML;
+    if(!String(_insertAdjacentHTML).includes('[native code]')){
+            return;
+    }
     Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(String(text), "text/html");
@@ -133,6 +145,9 @@
         Element.prototype,
         txt,
       );
+      if(!String(_textContent.set).includes('[native code]')){
+            continue;
+      }
       Object.defineProperty(Element.prototype, txt, {
         ..._textContent,
         set(value) {
