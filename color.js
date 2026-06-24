@@ -50,7 +50,7 @@
   const allRegex = re(join(values(compoundRe).map(x => x[0].source), '|'), 'ig');
   const ts = 'black';
   const sz = '0.1ch';
-  globalThis.color = (text) =>
+  globalThis.color ??= (text) =>
     text.replace(allRegex, ch => {
       for (const key in compoundRe) {
         if (test(compoundRe[key]?.[0], ch)) {
