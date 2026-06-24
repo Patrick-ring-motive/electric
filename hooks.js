@@ -1,22 +1,10 @@
 (() => {
   if(globalThis['&electric']){return;}
   globalThis['&electric'] = true;
+
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
-  const body = (doc=document)=>doc.body??doc?.getElementsByTagName?.('body')[0]??doc.firstElementChild;
-    const colorDoc = (doc=document) => {
-      let node, walk = doc.createTreeWalker(body(doc), NodeFilter.SHOW_TEXT, null);
-      while (node = walk.nextNode()) {
-        if (node.parentElement.tagName == 'SCRIPT') {
-          continue;
-        }
-        if (node.parentElement.tagName == 'STYLE') {
-          continue;
-        }
-        node.textContent = node.textContent;
-      }
-      };
   (() => {
     const skips = ["SCRIPT", "STYLE", "LINK", "META"];
     const skipCss = skips.map((x) => "" + x + ", " + x + " *").join(", ");
@@ -118,7 +106,7 @@
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
         const doc = _parseFromString.apply(this, args);
-        let elems = body(doc).querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+        let elems = doc.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
         for (const elem of elems) {
           if (!elem?.children?.length) {
             elem.textContent = (elem.textContent || "");
@@ -136,7 +124,7 @@
     Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(String(text), "text/html");
-      text = String(body(doc).innerHTML);
+      text = String(doc.body.innerHTML);
       return _insertAdjacentHTML.call(this, position, text);
     }
   })();
@@ -154,7 +142,7 @@
           try {
             if (isString(value)) {
               const doc = parse(value);
-              value = String(body(doc).innerHTML);
+              value = String(doc.body.innerHTML);
             }
             return _textContent.set.call(this, value);
           } catch (e) {
@@ -165,8 +153,18 @@
     }
   })();
   document.firstElementChild.dataset.location = window.location;
-  
-
+  const colorDoc = () => {
+      let node, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      while (node = walk.nextNode()) {
+        if (node.parentElement.tagName == 'SCRIPT') {
+          continue;
+        }
+        if (node.parentElement.tagName == 'STYLE') {
+          continue;
+        }
+        node.textContent = node.textContent;
+      }
+      };
   colorDoc();
    if (!['complete', 'interactive'].includes(document.readyState)) {
     document.addEventListener('DOMContentLoaded', colorDoc);
