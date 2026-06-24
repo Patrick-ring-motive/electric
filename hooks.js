@@ -118,7 +118,12 @@
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
         const doc = _parseFromString.apply(this, args);
-        colorDoc(doc);
+        let elems = body(doc).querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+        for (const elem of elems) {
+          if (!elem?.children?.length) {
+            elem.textContent = (elem.textContent || "");
+          }
+        }
         return doc;
       } catch (e) {
         console.warn(e, this, ...args);
