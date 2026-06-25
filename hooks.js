@@ -1,4 +1,6 @@
 (() => {
+  const parser = DOMParser.prototype.parseFromString.bind(new DOMParser());
+  const parse = x => parser(x,"text/html");
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
@@ -131,15 +133,12 @@
             return;
     }
     Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(String(text), "text/html");
+      const doc = parse(String(text), "text/html");
       text = String(doc.body.innerHTML);
       return _insertAdjacentHTML.call(this, position, text);
     }
   })();
   (() => {
-    const parser = new DOMParser();
-    const parse = x => parser.parseFromString(x, "text/html");
     for (const txt of ["innerHTML"]) {
       const _textContent = Object.getOwnPropertyDescriptor(
         Element.prototype,
