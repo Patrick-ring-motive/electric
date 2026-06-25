@@ -213,7 +213,13 @@
     text.parentNode.replaceChild(span, text);
   }
 }
-   const colorDoc = () => {
+
+   const colorDoc = (()=>{
+       let running = false;
+       return () => {
+    if(running)return;
+running = true
+           try{
     wrapTextNodes(document.body??document.firstElementChild);
     let elems = document.querySelectorAll('*:not(script):not(style):not(link):not(meta):not(title):not(:has(*)):not([class^="color"],[class^="color"] *)');
     for (const elem of elems) {
@@ -221,18 +227,25 @@
         elem.textContent = (elem.textContent || "");
       }
     }
+           }catch(e){
+               consol.warn(e);
+}
+running = false;
   };
+                    })();
   //if (['complete', 'interactive'].includes(document.readyState)) {
     colorDoc();
  // } else {
     document.addEventListener('DOMContentLoaded', colorDoc);
   //}
     window.addEventListener('load', colorDoc);
+  let last = document.querySelectorAll('[class^="color"]').length;
   let once;
   document.addEventListener('click',()=>{
-    if(!document.querySelector('[class^="color"]')){
-once = false;
-}
+    if(document.querySelector('[class^="color"]')!==last||!document.querySelector('[class^="color"]')){
+        last = document.querySelectorAll('[class^="color"]').length;
+        once = false;
+    }
 if(once)return;
 colorDoc();
     once = true;
