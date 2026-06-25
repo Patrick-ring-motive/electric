@@ -165,7 +165,53 @@
     }
   })();
   document.firstElementChild.dataset.location = window.location;
-  const colorDoc = () => {
+  function wrapTextNodes(root = document.body) {
+  const walker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode(node) {
+        // Skip empty/whitespace text nodes
+        if (!node.nodeValue.trim()) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        const parent = node.parentElement;
+        if (!parent) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        // Skip anything under script/style
+        if (node.parentNode.closest('script,style')) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        // Only direct parents matching :has(*)
+        if (!parent.matches(':has(*)')) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }
+  );
+
+  const nodes = [];
+
+  // Collect first because replacing mutates the tree
+  for (let node; (node = walker.nextNode()); ) {
+    nodes.push(node);
+  }
+
+  for (const text of nodes) {
+    const span = document.createElement('span');
+    span.appendChild(text.cloneNode());
+
+    text.parentNode.replaceChild(span, text);
+  }
+}
+   const colorDoc = () => {
+    wrapTextNodes(document.body??document.firstElementChild);
     let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
     for (const elem of elems) {
       if (!elem?.children?.length) {
@@ -173,10 +219,20 @@
       }
     }
   };
-  if (['complete', 'interactive'].includes(document.readyState)) {
+  //if (['complete', 'interactive'].includes(document.readyState)) {
     colorDoc();
-  } else {
+ // } else {
     document.addEventListener('DOMContentLoaded', colorDoc);
-  }
+  //}
+    window.addEventListener('load', colorDoc);
+  let once;
+  document.addEventListener('click',()=>{
+    if(!document.querySelector('[class^="color"]')){
+once = false;
+}
+if(once)return;
+colorDoc();
+    once = true;
 
+});
 })();
