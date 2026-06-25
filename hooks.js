@@ -1,13 +1,9 @@
 (() => {
-  const parser = DOMParser.prototype.parseFromString.bind(new DOMParser());
-  const parse = x => parser(x, "text/html");
-  const _append = Element.prototype.append;
-  const _appendChild = Node.prototype.appendChild;
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
-  const skips = ["SCRIPT", "STYLE", "LINK", "META"];
   (() => {
+    const skips = ["SCRIPT", "STYLE", "LINK", "META"];
     const skipCss = skips.map((x) => "" + x + ", " + x + " *").join(", ");
     for (const node of [Node, Element, HTMLElement]) {
       for (const method of [
@@ -27,7 +23,7 @@
           if (!_NodeMethod) {
             return;
           }
-          if (!String(node.prototype[method]).includes('[native code]')) {
+          if(!String(node.prototype[method]).includes('[native code]')){
             return;
           }
           node.prototype[method] = Object.setPrototypeOf(function NodeMethod(
@@ -79,8 +75,8 @@
     for (const txt of ["textContent", "innerText"]) {
       const proto = protoMap[txt];
       const _textContent = Object.getOwnPropertyDescriptor(proto, txt);
-      if (!String(_textContent.set).includes('[native code]')) {
-        continue;
+      if(!String(_textContent.set).includes('[native code]')){
+            continue;
       }
       Object.defineProperty(proto, txt, {
         ..._textContent,
@@ -96,13 +92,6 @@
             if (value?.replace) {
               const val = color(value);
               if (val !== value) {
-                if (this.nodeType === Node.TEXT_NODE) {
-                  const doc = parse(val);
-                  const span = document.createElement('span');
-                  _append.apply(span, doc.body.childNodes);
-                  _textContent.set.call(this, '');
-                  return _appendChild.call(this, span);
-                }
                 return setHTML.call(this, val);
               }
             }
@@ -117,8 +106,8 @@
 
   (() => {
     const _parseFromString = DOMParser.prototype.parseFromString;
-    if (!String(_parseFromString).includes('[native code]')) {
-      return;
+    if(!String(_parseFromString).includes('[native code]')){
+            return;
     }
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
@@ -138,23 +127,26 @@
   })();
   (() => {
     const _insertAdjacentHTML = Element.prototype.insertAdjacentHTML;
-    if (!String(_insertAdjacentHTML).includes('[native code]')) {
-      return;
+    if(!String(_insertAdjacentHTML).includes('[native code]')){
+            return;
     }
     Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
-      const doc = parse(String(text), "text/html");
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(String(text), "text/html");
       text = String(doc.body.innerHTML);
       return _insertAdjacentHTML.call(this, position, text);
     }
   })();
   (() => {
+    const parser = new DOMParser();
+    const parse = x => parser.parseFromString(x, "text/html");
     for (const txt of ["innerHTML"]) {
       const _textContent = Object.getOwnPropertyDescriptor(
         Element.prototype,
         txt,
       );
-      if (!String(_textContent.set).includes('[native code]')) {
-        continue;
+      if(!String(_textContent.set).includes('[native code]')){
+            continue;
       }
       Object.defineProperty(Element.prototype, txt, {
         ..._textContent,
@@ -174,12 +166,11 @@
   })();
   document.firstElementChild.dataset.location = window.location;
   const colorDoc = () => {
-    let node, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-    while (node = walk.nextNode()) {
-      if (skips.includes(node.parentElement.tagName)) {
-        continue;
+    let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+    for (const elem of elems) {
+      if (!elem?.children?.length) {
+        elem.textContent = (elem.textContent || "");
       }
-      node.textContent = node.textContent;
     }
   };
   if (['complete', 'interactive'].includes(document.readyState)) {
