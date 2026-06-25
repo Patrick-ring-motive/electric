@@ -3,7 +3,7 @@
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
   (() => {
-    const skips = ["SCRIPT", "STYLE", "LINK", "META"];
+    const skips = ["SCRIPT", "STYLE", "LINK", "META","TITLE];
     const skipCss = skips.map((x) => "" + x + ", " + x + " *").join(", ");
     for (const node of [Node, Element, HTMLElement]) {
       for (const method of [
@@ -94,6 +94,9 @@
               if (val !== value) {
                 return setHTML.call(this, val);
               }
+            }
+            if(_textContent.get.call(this) == value){
+                return _textContent.get.call(this)
             }
             return _textContent.set.call(this, value);
           } catch (e) {
