@@ -166,12 +166,13 @@
   })();
   document.firstElementChild.dataset.location = window.location;
   const colorDoc = () => {
-    let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
-    for (const elem of elems) {
-      if (!elem?.children?.length) {
-        elem.textContent = (elem.textContent || "");
+      let node, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      while (node = walk.nextNode()) {
+        if (skips.includes(node.parentElement.tagName)) {
+          continue;
+        }
+        node.textContent = node.textContent;
       }
-    }
   };
   if (['complete', 'interactive'].includes(document.readyState)) {
     colorDoc();
