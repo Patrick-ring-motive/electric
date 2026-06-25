@@ -2,8 +2,8 @@
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
+  const skips = ["SCRIPT", "STYLE", "LINK", "META"];
   (() => {
-    const skips = ["SCRIPT", "STYLE", "LINK", "META"];
     const skipCss = skips.map((x) => "" + x + ", " + x + " *").join(", ");
     for (const node of [Node, Element, HTMLElement]) {
       for (const method of [
