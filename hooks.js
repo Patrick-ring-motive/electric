@@ -98,10 +98,10 @@
               if (val !== value) {
                 if(this.nodeType === Node.TEXT_NODE){
                   const doc = parse(val);
-                  const frag = document.createDocumentFragment();
-                  frag.append(...doc.body.childNodes);
+                  const span = document.createElement('span');
+                  _append.apply(span,doc.body.childNodes);
                   _textContent.set.call(this,'');
-                  return this.appendChild(frag);
+                  return _appendChild.call(this,span);
                 }
                 return setHTML.call(this, val);
               }
