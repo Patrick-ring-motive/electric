@@ -1,6 +1,8 @@
 (() => {
   const parser = DOMParser.prototype.parseFromString.bind(new DOMParser());
   const parse = x => parser(x,"text/html");
+  const _append = Element.prototype.append;
+  const _appendChild = Node.prototype.appendChild;
   const isString = (x) => typeof x === "string" || x instanceof String;
   const isNull = (x) => x === null || x === undefined;
   const setHTML = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set;
@@ -94,6 +96,13 @@
             if (value?.replace) {
               const val = color(value);
               if (val !== value) {
+                if(this.nodeType === Node.TEXT_NODE){
+                  const doc = parse(val);
+                  const frag = document.createDocumentFragment();
+                  frag.append(...doc.body.childNodes);
+                  _textContent.set.call(this,'');
+                  return this.appendChild(frag);
+                }
                 return setHTML.call(this, val);
               }
             }
