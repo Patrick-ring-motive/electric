@@ -115,7 +115,7 @@
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
         const doc = _parseFromString.apply(this, args);
-        let elems = doc.body.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+        let elems = doc.body.querySelectorAll('*:not(script):not(style):not(link):not(meta):not(title):not(:has(*)):not([class^="color"],[class^="color"] *)');
         for (const elem of elems) {
           if (!elem?.children?.length) {
             elem.textContent = (elem.textContent || "");
@@ -215,7 +215,7 @@
 }
    const colorDoc = () => {
     wrapTextNodes(document.body??document.firstElementChild);
-    let elems = document.querySelectorAll("*:not(script):not(style):not(link):not(meta):not(:has(*))");
+    let elems = document.querySelectorAll('*:not(script):not(style):not(link):not(meta):not(title):not(:has(*)):not([class^="color"],[class^="color"] *)');
     for (const elem of elems) {
       if (!elem?.children?.length) {
         elem.textContent = (elem.textContent || "");
