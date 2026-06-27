@@ -41,7 +41,7 @@
     number: [/[0-9]+/, 'deepskyblue'],
   };
   const compoundRe = {
-    yellow: [/\b(Y|Yellows?|banana[a-z]*|lemons?|corn)\b/i, 'yellow'],
+    yellow: [/\b(Y|Yellows?|banana[a-z]*|lemons?|corn|maize)\b/i, 'yellow'],
     red: [/\b(R|Reds?|Apples[a-z]*|tomatoe?s?|strawberry|strawberries)\b/i, 'red'],
     green: [/\b(G|Greens?|plants?|trees?|leaf|limes?)\b/i, '#00ff00'],
     blue: [/\b(B|Blues?|blueberry|blueberries)\b/i, '#0000ff'],
