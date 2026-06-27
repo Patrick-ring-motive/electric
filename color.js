@@ -42,9 +42,9 @@
   };
   const compoundRe = {
     yellow: [/\b(Y|Yellows?|banana[a-z]*|lemons?|corn|maize)\b/i, 'yellow'],
-    red: [/\b(R|Reds?|Apples[a-z]*|tomatoe?s?|strawberry|strawberries)\b/i, 'red'],
+    red: [/\b(R|Reds?|Apple[a-z]*|tomatoe?s?|strawberry|strawberries)\b/i, 'red'],
     green: [/\b(G|Green[a-z]*|plants?|trees?|leaf|limes?|lettuce|vegetables?)\b/i, '#00ff00'],
-    blue: [/\b(B|Blues[a-z]*)\b/i, '#0000ff'],
+    blue: [/\b(B|Blue[a-z]*)\b/i, '#0000ff'],
     orange: [/\b(O|Oranges?|pumpkins?)\b/i, 'orange'],
     pink: [/\b(P|Pinks?|Magentas?)\b/i, '#FF69B4'],
     purple: [/\b(V|Violets?|Purples?|grapes?|eggplants?)\b/i, '#ba7dff'],
