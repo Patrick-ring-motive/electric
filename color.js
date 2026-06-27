@@ -41,14 +41,14 @@
     number: [/[0-9]+/, 'deepskyblue'],
   };
   const compoundRe = {
-    yellow: [/\b(Y|Yellows?|bananas?|lemons?)\b/i, 'yellow'],
-    red: [/\b(R|Reds?|Apples?|tomatoe?s?|strawberry|strawberries)\b/i, 'red'],
+    yellow: [/\b(Y|Yellows?|banana[a-z]*|lemons?|corn)\b/i, 'yellow'],
+    red: [/\b(R|Reds?|Apples[a-z]*|tomatoe?s?|strawberry|strawberries)\b/i, 'red'],
     green: [/\b(G|Greens?|plants?|trees?|leaf|limes?)\b/i, '#00ff00'],
-    blue: [/\b(B|Blues?|blieberry|blueberries)\b/i, '#0000ff'],
+    blue: [/\b(B|Blues?|blueberry|blueberries)\b/i, '#0000ff'],
     orange: [/\b(O|Oranges?)\b/i, 'orange'],
     pink: [/\b(P|Pinks?|Magentas?)\b/i, '#FF69B4'],
     purple: [/\b(V|Violets?|Purples?|grapes?)\b/i, '#ba7dff'],
-    purple: [/\b(W|Whites?)\b/i, '#ffffff'],
+    white: [/\b(W|Whites?)\b/i, '#ffffff'],
     x: [/(\bx\b)/i, '#ffffff'],
     symbol: [re(`[^a-zA-Z0-9\\s${join(values(regexes).map(x =>x[0].source.slice(1,-2)))}]+`), '#00ff00'],
     ...regexes
