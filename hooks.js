@@ -248,7 +248,7 @@
   let last = document.querySelectorAll('[class^="color"]').length;
   let once;
   document.addEventListener('click', () => {
-    if (/*document.querySelector('[class^="color"]') !== last ||*/ !document.querySelector('[class^="color"]')) {
+    if ( /*document.querySelector('[class^="color"]') !== last ||*/ !document.querySelector('[class^="color"]')) {
       last = document.querySelectorAll('[class^="color"]').length;
       once = false;
     }
