@@ -244,17 +244,17 @@
   document.addEventListener('DOMContentLoaded', colorDoc);
   //}
   window.addEventListener('load', colorDoc);
- // document.addEventListener("visibilitychange", colorDoc);
+  // document.addEventListener("visibilitychange", colorDoc);
   let last = document.querySelectorAll('[class^="color"]').length;
   let once;
- /* document.addEventListener('dblclick', () => {
-    if ( document.querySelector('[class^="color"]') !== last || !document.querySelector('[class^="color"]')) {
-      last = document.querySelectorAll('[class^="color"]').length;
-      once = false;
-    }
-    if (once) return;
-    colorDoc();
-    once = true;
+  /* document.addEventListener('dblclick', () => {
+     if ( document.querySelector('[class^="color"]') !== last || !document.querySelector('[class^="color"]')) {
+       last = document.querySelectorAll('[class^="color"]').length;
+       once = false;
+     }
+     if (once) return;
+     colorDoc();
+     once = true;
 
-  });*/
+   });*/
 })();
