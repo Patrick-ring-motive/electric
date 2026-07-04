@@ -177,6 +177,10 @@
     }
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
+        if(locked){
+          return _parseFromString.apply(this, args);
+        }
+        locked = true;
         const doc = _parseFromString.apply(this, args);
         let elems = doc.body.querySelectorAll('*:not(script):not(style):not(link):not(meta):not(title):not(:has(*)):not([class^="color"],[class^="color"] *)');
         for (const elem of elems) {
@@ -188,6 +192,8 @@
       } catch (e) {
         console.warn(e, this, ...args);
         return _parseFromString.apply(this, args);
+      }finally{
+        locked = false;
       }
     };
   })();
@@ -197,10 +203,20 @@
       return;
     }
     Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(String(text), "text/html");
-      text = String(doc.body.innerHTML);
-      return _insertAdjacentHTML.call(this, position, text);
+      try{
+        if(locked){
+          return _insertAdjacentHTML.call(this, position, text);
+        }
+        locked = true;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(String(text), "text/html");
+        text = String(doc.body.innerHTML);
+        return _insertAdjacentHTML.call(this, position, text);
+      }catch(e){
+        throw e;
+      }finally{
+        locked = false;
+      }
     }
   })();
   (() => {
@@ -218,6 +234,10 @@
         ..._textContent,
         set(value) {
           try {
+            if(locked){
+              return _textContent.set.call(this, value);
+            }
+            locked = true;
             if (isString(value)) {
               const doc = parse(value);
               value = String(doc.body.innerHTML);
@@ -225,6 +245,8 @@
             return _textContent.set.call(this, value);
           } catch (e) {
             console.warn(e, this, value);
+          }finally{
+            locked = false;
           }
         },
       });
