@@ -1,4 +1,5 @@
 (() => {
+  let lock;
   const _appendChild = Node.prototype.appendChild;
   const _replaceChild = Node.prototype.replaceChild;
 
@@ -80,6 +81,10 @@
             ...args
           ) {
             try {
+              if(locked){
+                return _NodeMethod.apply(this, args);
+              }
+              locked = true;
               if (
                 (isString(args[0]) || args[0]?.nodeName === "#text") && args[0]?.textContent?.trim?.() &&
                 !this?.matches?.(skipCss)
@@ -110,6 +115,8 @@
               } catch {
                 return this;
               }
+            }finally{
+              locked = false;
             }
           }, _NodeMethod);
         })();
@@ -132,6 +139,10 @@
         ..._textContent,
         set(value) {
           try {
+            if(locked){
+              return _textContent.set.call(this, value);
+            }
+            locked = true;
             if (!isString(value)) {
               if (!isNull(value)) {
                 value = String(value);
@@ -151,6 +162,8 @@
             return _textContent.set.call(this, value);
           } catch (e) {
             console.warn(e, this, value);
+          }finally{
+            locked = false;
           }
         },
       });
