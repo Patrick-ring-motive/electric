@@ -81,7 +81,7 @@
             ...args
           ) {
             try {
-              if(locked){
+              if (locked) {
                 return _NodeMethod.apply(this, args);
               }
               locked = true;
@@ -115,7 +115,7 @@
               } catch {
                 return this;
               }
-            }finally{
+            } finally {
               locked = false;
             }
           }, _NodeMethod);
@@ -139,7 +139,7 @@
         ..._textContent,
         set(value) {
           try {
-            if(locked){
+            if (locked) {
               return _textContent.set.call(this, value);
             }
             locked = true;
@@ -162,7 +162,7 @@
             return _textContent.set.call(this, value);
           } catch (e) {
             console.warn(e, this, value);
-          }finally{
+          } finally {
             locked = false;
           }
         },
@@ -177,7 +177,7 @@
     }
     DOMParser.prototype.parseFromString = function parseFromString(...args) {
       try {
-        if(locked){
+        if (locked) {
           return _parseFromString.apply(this, args);
         }
         locked = true;
@@ -192,7 +192,7 @@
       } catch (e) {
         console.warn(e, this, ...args);
         return _parseFromString.apply(this, args);
-      }finally{
+      } finally {
         locked = false;
       }
     };
@@ -203,8 +203,8 @@
       return;
     }
     Element.prototype.insertAdjacentHTML = function insertAdjacentHTML(position, text) {
-      try{
-        if(locked){
+      try {
+        if (locked) {
           return _insertAdjacentHTML.call(this, position, text);
         }
         locked = true;
@@ -212,9 +212,9 @@
         const doc = parser.parseFromString(String(text), "text/html");
         text = String(doc.body.innerHTML);
         return _insertAdjacentHTML.call(this, position, text);
-      }catch(e){
+      } catch (e) {
         throw e;
-      }finally{
+      } finally {
         locked = false;
       }
     }
@@ -234,7 +234,7 @@
         ..._textContent,
         set(value) {
           try {
-            if(locked){
+            if (locked) {
               return _textContent.set.call(this, value);
             }
             locked = true;
@@ -245,7 +245,7 @@
             return _textContent.set.call(this, value);
           } catch (e) {
             console.warn(e, this, value);
-          }finally{
+          } finally {
             locked = false;
           }
         },
