@@ -1,5 +1,5 @@
 (() => {
-  let lock;
+  let locked;
   const _appendChild = Node.prototype.appendChild;
   const _replaceChild = Node.prototype.replaceChild;
 
